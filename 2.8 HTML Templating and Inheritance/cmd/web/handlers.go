@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"html/template" // new import
+	"log"           // new import
 	"net/http"
 	"strconv"
 )
@@ -13,7 +14,34 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, _ = w.Write([]byte("Hello from Snippetbox"))
+	// html.page.html은 반드시 첫번째에 위치해야함
+	files := []string{
+		"./ui/html/home.page.html",
+		"./ui/html/base.layout.html",
+		// footer html을 포함시킨다.
+		"./ui/html/footer.partial.html",
+	}
+
+	// template.ParseFiles 함수로 템플릿파일을 템플릿 셋으로 읽는다.
+	// 오류가 있으면 오류를 기록하고 500에러를 보낸다
+	// ParseFiles 함수는 파일을 읽고 템플릿 셋에 템플릿을 저장해라
+	//
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+		return
+	}
+
+	// Execute 메소드를 사용하여 템플릿 컨텐츠를 response body으로 작성한다.
+	// 마지막 인자는 동적 데이터를 나타내며 현재는 nil로 둔다
+	err = ts.Execute(w, nil)
+	if err != nil{
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+	}
+
+	//_, _ = w.Write([]byte("Hello from Snippetbox"))
 }
 
 func showSnippet(w http.ResponseWriter, r *http.Request) {
@@ -57,14 +85,4 @@ func createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, _ = w.Write([]byte("Create a new snippet...."))
-}
-
-func main() {
-	http.HandleFunc("/", home)
-	http.HandleFunc("/snippet", showSnippet)
-	http.HandleFunc("/snippet/create", createSnippet)
-
-	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", nil)
-	log.Fatal(err)
 }
