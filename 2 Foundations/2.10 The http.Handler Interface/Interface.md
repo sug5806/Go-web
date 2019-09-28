@@ -1,0 +1,1 @@
+http.HandlerFunc() 어댑터는 ServerHTTP() 메소드를 자동으로 추가하여 작동한다. 
