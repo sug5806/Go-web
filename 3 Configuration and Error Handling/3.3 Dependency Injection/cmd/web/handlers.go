@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 )
+
 // 3.3 home 핸들러 함수는 이제 application에 대한 메소드이므로 해당 필드에 접근 가능
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -38,7 +39,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// Execute 메소드를 사용하여 템플릿 컨텐츠를 response body으로 작성한다.
 	// 마지막 인자는 동적 데이터를 나타내며 현재는 nil로 둔다
 	err = ts.Execute(w, nil)
-	if err != nil{
+	if err != nil {
 		//log.Println(err.Error())
 
 		// 3.3 표준 로거 대신 로그메시지 작성
@@ -50,7 +51,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 // 3.3 showSnippet 핸들러 함수는 이제 application에 대한 메소드이므로 해당 필드에 접근 가능
-func (app *application)showSnippet(w http.ResponseWriter, r *http.Request) {
+func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	// Query String으로 들어온 값중 ID값을 뽑아
 	// 문자열을 정수로 변환한다음 비교한다
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
@@ -65,7 +66,7 @@ func (app *application)showSnippet(w http.ResponseWriter, r *http.Request) {
 }
 
 // 3.3 createSnippet 핸들러 함수는 이제 application에 대한 메소드이므로 해당 필드에 접근 가능
-func (app *application)createSnippet(w http.ResponseWriter, r *http.Request) {
+func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		// 잘못된 요청을 보내면 POST요청만 가능하다는 메시지를 보내줌
 		w.Header().Set("Allow", http.MethodPost)

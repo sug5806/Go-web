@@ -26,7 +26,6 @@ func main() {
 	// /static 접두사를 제거한다.
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
-
 	log.Printf("Starting server on %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
 	log.Fatal(err)

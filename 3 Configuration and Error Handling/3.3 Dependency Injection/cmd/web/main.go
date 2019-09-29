@@ -10,7 +10,7 @@ import (
 // 3.3 애플리케이션 전체에 대한 종속성을 보유하도록 application 구조체 정의
 type application struct {
 	errorLog *log.Logger
-	infoLog *log.Logger
+	infoLog  *log.Logger
 }
 
 func main() {
@@ -31,7 +31,7 @@ func main() {
 	// 3.3 의존성을 포함하는 새로운 구조체 인스턴스 생성
 	app := &application{
 		errorLog: errorLog,
-		infoLog: infoLog,
+		infoLog:  infoLog,
 	}
 
 	// 3.3 app 구조체의 메서드를 핸들러 함수로 사용하도록 경로 선언 변경
@@ -48,11 +48,10 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	srv := &http.Server{
-		Addr:  *addr,
+		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler: mux,
+		Handler:  mux,
 	}
-
 
 	infoLog.Printf("Starting server on %s", *addr) // Information message
 	//err := http.ListenAndServe(*addr, mux)

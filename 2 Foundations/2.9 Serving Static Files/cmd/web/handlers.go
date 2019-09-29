@@ -36,7 +36,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Execute 메소드를 사용하여 템플릿 컨텐츠를 response body으로 작성한다.
 	// 마지막 인자는 동적 데이터를 나타내며 현재는 nil로 둔다
 	err = ts.Execute(w, nil)
-	if err != nil{
+	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 	}
