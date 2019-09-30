@@ -58,6 +58,25 @@ func showSnippet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
 }
 
+func code(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		files := []string{
+			"./ui/html/code.html",
+		}
+
+		ts, err := template.ParseFiles(files...)
+		if err != nil {
+			http.Error(w, "page not found", 404)
+		}
+
+		ts.Execute(w, nil)
+	} else {
+		key := "code"
+		code := r.PostFormValue(key)
+		fmt.Fprint(w, "code: ", code)
+	}
+}
+
 func createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		// 잘못된 요청을 보내면 POST요청만 가능하다는 메시지를 보내줌
